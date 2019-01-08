@@ -1,6 +1,5 @@
 #Write a program to read a random line from a file
 
-
 import random
 
 def random_line(file_name):
