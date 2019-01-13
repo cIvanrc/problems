@@ -16,7 +16,9 @@ class py_solution:
         roman_num = ''
         i = 0
         while  num > 0:
-            for _ in range(num // val[i]):
+            tmp = num//val[i]
+            print(tmp)
+            for _ in range(tmp):
                 roman_num += syb[i]
                 num -= val[i]
             i += 1
