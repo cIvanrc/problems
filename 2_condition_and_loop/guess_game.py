@@ -16,7 +16,7 @@ def check_response(i):
     elif i > number:
         output = "too high"
     else:
-        output = "exactly rigth"
+        output = "exactly right"
     return output
 
 guess_game()
