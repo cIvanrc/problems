@@ -9,3 +9,19 @@
 # Output
 # [[0,0,0,0], [0,1,2,3], [0,2,4,6]]
 
+
+def dimensional_arry(rows, columns)
+  array_nested = Array.new
+  rows.times do |row|
+    arr = Array.new
+    columns.times do |column|
+       arr << column*row
+    end
+    array_nested << arr
+  end
+  print array_nested,"\n"
+end
+
+
+dimensional_arry(3,4)
+
