@@ -9,8 +9,3 @@
 # Output
 # [[0,0,0,0], [0,1,2,3], [0,2,4,6]]
 
-def dimensional_array(rows, columns):
-    arr = [[row*column for column in range(columns)] for row in range(rows)]
-    print(arr)
-
-dimensional_array(3,4)
