@@ -25,7 +25,6 @@ class Shuffler
 end
 
 class MemberAssignator
-
   def initialize(shuffler)
     @members = shuffler.members
     @projects = shuffler.projects
