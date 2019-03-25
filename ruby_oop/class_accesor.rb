@@ -19,9 +19,24 @@ class Person
   end
 end
 
+class Employee < Person
+  attr_accessor :salary
+
+  def initialize(name, height, salary)
+    super(name, height)
+    @salary = salary
+  end
+
+  def to_s
+    super + " - Salary: #{@salary}"
+  end
+end
 
 p1 = Person.new("ivan1", 180)
 p2 = Person.new("ivan2", 160)
+
+e = Employee.new("Rob", 180, 8000)
+puts e
 
 p2.height = 170
 
