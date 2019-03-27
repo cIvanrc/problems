@@ -45,7 +45,6 @@ class Shuffler
 
   def reviewers
     @reviewers ||= REVIEWERS.map { |reviewer| Reviewer.new(reviewer[:name]) }
-    #@reviewers ||= REVIEWERS.map { |reviewer| p reviewer[:name] }
   end
 
   def reviewees
@@ -64,7 +63,10 @@ class MemberAssignator
   end
 
   def assignation
-    @assignation ||= @reviewees.map { |reviewee| {reviewee: reviewee, reviewers: sample_reviewers} }
+    @assignation ||= @reviewees.map do  |reviewee| 
+      reviewee.reviewers = sample_reviewers 
+      reviewee
+    end
   end
 
   def sample_reviewers
@@ -72,21 +74,49 @@ class MemberAssignator
   end
 
   def send_mail
-    #assignation.each { |assign| Email.new(assign).create_email }
-    Email.new(assignation[0]).create_email
+    assignation.each { |reviewee| Email.new(reviewee).create_email_and_notify }
   end
 end
 
 
 class Email
-  attr_reader :data
-  def initialize(data)
-    @data = data
+  attr_reader :reviewee
+  def initialize(reviewee)
+    @reviewee = reviewee
   end
 
-  def create_email
-    puts @data
+
+  def message
+   puts %Q{
+  Sending E-mail to: #{@reviewee.email}
+  Hi #{@reviewee.name} 
+  Your reviewers are #{@reviewee.reviewers.join(" and ")} 
+  }
   end
+
+  def create_email_and_notify
+    message
+    write_to
+  end
+
+  def write_to
+    file = File.new("#{@reviewee.email}.txt", "w")
+    file.write "---\n"
+    file.write build_email
+    file.write "---"
+    file.close
+  end
+
+  def build_email
+  %Q{
+  E-mail to: #{@reviewee.email}
+  Body:
+  Hi #{@reviewee.name}
+  Your reviewers are #{@reviewee.reviewers.join(" and ")}
+  Sent at: #{Time.now}
+
+}
+  end 
 end
 
 class Reviewer
@@ -94,13 +124,19 @@ class Reviewer
   def initialize(name)
     @name = name
   end
+
+  def to_s
+    @name
+  end
 end
 
 class Reviewee
   attr_reader :name, :email
+  attr_accessor :reviewers
   def initialize(name, email)
     @name = name
     @email = email
+    @reviewers = []
   end
 end
 
