@@ -1,0 +1,190 @@
+<p><a href="https://codeclimate.com/github/IcaliaLabs/sepomex"><img src="https://codeclimate.com/github/IcaliaLabs/sepomex/badges/gpa.svg" alt="Code Climate"></a>
+<a href="https://codeclimate.com/github/IcaliaLabs/sepomex/coverage"><img src="https://codeclimate.com/github/IcaliaLabs/sepomex/badges/coverage.svg" alt="Test Coverage"></a>
+<a href="https://codeclimate.com/github/IcaliaLabs/sepomex"><img src="https://codeclimate.com/github/IcaliaLabs/sepomex/badges/issue_count.svg" alt="Issue Count"></a></p>
+
+<h1><a href="https://github.com/IcaliaLabs/sepomex">Sepomex</a></h1>
+
+<p>Sepomex is a REST API that maps all the data from the current zip codes in Mexico. You can get the CSV or Excel files from the <a href="http://www.sepomex.gob.mx/lservicios/servicios/CodigoPostal_Exportar.aspx">official site</a></p>
+
+<p>We build this API in order to provide a way to developers query the zip codes, states and municipalities across the country.</p>
+
+<h2>Table of contents</h2>
+
+<ul>
+<li><a href="#quick-start">Quick start</a></li>
+<li><a href="#querying-the-api">Querying the API</a></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#heroes">Heroes</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+
+<h2>Quick start</h2>
+
+<p>The base URI to start consuming the JSON response is under:</p>
+
+<p><code>
+http://sepomex.icalialabs.com/api/v1/zip_codes
+</code></p>
+
+<p>There are currently <code>145,481</code> records on the database which were extracted from the <a href="https://github.com/IcaliaLabs/sepomex/blob/master/lib/support/sepomex_db.csv">CSV file</a> included in the project.</p>
+
+<p>Records are paginated with <strong>50</strong> records per page.</p>
+
+<h3>Running the project</h3>
+
+<h4>Prerequisites</h4>
+
+<ol>
+<li>Install the <code>foreman</code> gem with:</li>
+</ol>
+
+<p><code>console
+% gem install foreman
+</code></p>
+
+<p>To run the api locally you can follow the next steps:</p>
+
+<ol>
+<li>First clone the project <code>git clone https://github.com/IcaliaLabs/sepomex.git</code></li>
+<li>Run the <code>bin/setup</code> script</li>
+<li>Lift the server <code>foreman start</code></li>
+</ol>
+
+<p>Or by hand</p>
+
+<ol>
+<li>First clone the project <code>git clone https://github.com/IcaliaLabs/sepomex.git</code></li>
+<li>Under the <code>sepomex</code> directory run the <code>bundle install</code> command to download all the dependencies</li>
+<li>Set up the <code>database.yml</code> to meet your requirements and create it</li>
+<li>Migrate the database, <code>rake db:migrate</code></li>
+<li>We have provided a rake task to migrate the CSV data: <code>rake db:migrate:zip_codes</code></li>
+<li>Lift the server <code>foreman start</code></li>
+</ol>
+
+<h2>Querying the API</h2>
+
+<p>We currently provide 4 kind of resources: </p>
+
+<ul>
+<li><strong>Zip Codes</strong>: <a href="https://sepomex.icalialabs.com/api/v1/zip_codes">http://sepomex.icalialabs.com/api/v1/zip_codes</a></li>
+<li><strong>States</strong>: <a href="https://sepomex.icalialabs.com/api/v1/states">http://sepomex.icalialabs.com/api/v1/states</a></li>
+<li><strong>Municipalities</strong>: <a href="https://sepomex.icalialabs.com/api/v1/municipalities">http://sepomex.icalialabs.com/api/v1/municipalities</a></li>
+<li><strong>Cities</strong>: <a href="https://sepomex.icalialabs.com/api/v1/cities">http://sepomex.icalialabs.com/api/v1/cities</a></li>
+</ul>
+
+<h3>ZipCodes</h3>
+
+<p>In order to provide more flexibility to search a zip code, whether is by city, colony, state or zip code you can now send multiple parameters to make the appropiate search. You can fetch the:</p>
+
+<h4>by city</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/zip_codes -d city=monterrey
+</code></p>
+
+<h4>by state</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/zip_codes -d state=nuevo%20leon
+</code></p>
+
+<h4>by colony</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/zip_codes -d colony=punta%20contry
+</code></p>
+
+<h4>by cp</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/zip_codes -d zip_code=67173
+</code></p>
+
+<h4>all together</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/zip_codes \
+-d colony=punta%20contry \
+-d state=nuevo%20leon \
+-d city=guadalupe
+</code></p>
+
+<p><strong>Note: A link for the json attributes description is provided <a href="http://www.sepomex.gob.mx/lservicios/servicios/imagenes/Descrip.pdf">here</a></strong></p>
+
+<h3>States</h3>
+
+<p>The <code>states</code> resources can be fetch through several means:</p>
+
+<h4>all</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/states
+</code></p>
+
+<h4>by id</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/states/1
+</code></p>
+
+<h4>states municipalities</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/states/1/municipalities
+</code></p>
+
+<h3>Municipalities</h3>
+
+<h4>all</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/municipalities
+</code></p>
+
+<h4>by id</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/municipalities/1
+</code></p>
+
+<h4>by zip_code</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/municipalities -d zip_code=67173
+</code></p>
+
+<h3>Cities</h3>
+
+<h4>all</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/cities
+</code></p>
+
+<h4>by id</h4>
+
+<p><code>bash
+curl -X GET https://sepomex.icalialabs.com/api/v1/cities/1
+</code></p>
+
+<h2>Contributing</h2>
+
+<p>Please submit all pull requests against a separate branch.</p>
+
+<h3>Code of conduct</h3>
+
+<p>This project adheres to the <a href="http://contributor-covenant.org/version/1/2/0/">Contributor Covenant 1.2</a>. By participating, you are expected to honor this code. </p>
+
+<h2>Heroes</h2>
+
+<p><strong>Abraham Kuri</strong></p>
+
+<ul>
+<li><a href="http://twitter.com/kurenn">http://twitter.com/kurenn</a></li>
+<li><a href="http://github.com/kurenn">http://github.com/kurenn</a></li>
+<li><a href="http://klout.com/#/kurenn">http://klout.com/#/kurenn</a></li>
+</ul>
+
+<h2>Copyright and license</h2>
+
+<p>Code and documentation copyright 2013-2016 Icalia Labs. Code released under <a href="LICENSE">the MIT license</a>.</p>
