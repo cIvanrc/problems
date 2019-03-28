@@ -22,13 +22,18 @@ module Rest
     RestClient.get url
   end
   
-  def parse(raw)
+  def self.parse(raw)
     JSON.parse raw
   end
+
+  def self.params(url, params)
+    RestClient.get url, params: params
+  end
+
 end
 
 class Markup
-  #include Rest
+  extend Rest
 
   def self.generate(url)
     @url = url
@@ -44,31 +49,39 @@ class Markup
   end
 
   def self.html_markup
-    GitHub::Markup.render('README.md', Rest::get(@url) )
+    github_markup( Rest::get(@url) )
+  end
+
+  def self.github_markup(data)
+    GitHub::Markup.render('README.md', data )
   end
 end
 
 Markup.generate("https://raw.githubusercontent.com/IcaliaLabs/sepomex/master/README.md")
 
 module Sepomex
-  include Rest
+  #extend Rest
 
-  def zip_codes
-    @zip_codes ||= get "http://sepomex.icalialabs.com/api/v1/zip_codes/" 
+  def self.zip_codes_url
+    "http://sepomex.icalialabs.com/api/v1/zip_codes"
   end
 
-  def states
-    @states ||= get "http://sepomex.icalialabs.com/api/v1/states/" 
+  def self.zip_codes
+    @zip_codes = Rest::get zip  
   end
 
-  def cities
-    @citites ||= get "http://sepomex.icalialabs.com/api/v1/cities/"
+  def self.states
+    @states = Rest::get "http://sepomex.icalialabs.com/api/v1/states/" 
+  end
+
+  def self.cities
+    @citites = Rest::get "http://sepomex.icalialabs.com/api/v1/cities/"
   end
 end
 
 
 class ZipCode
-  include Sepomex
+  #include Sepomex
 
   attr_accessor :id, :d_codigo, :d_asenta, :d_tipo_asenta, :d_mnpio, :d_estado, :d_ciudad, :d_cp, :c_estado, :c_oficina, :c_cp, :c_tipo_asenta, :c_mnpio, :id_asenta_cpcons, :d_zona, :c_cve_ciudad
   def initialize
@@ -92,10 +105,10 @@ class ZipCode
   end
 
   def self.all_zip_codes
-   parse(zip_codes)["zip_codes"] 
+    Rest::parse(Sepomex::zip_codes)["zip_codes"] 
   end
 
-  def all
+  def self.all
     @all ||= (all_zip_codes).map do |zip|
       zip_code = ZipCode.new
       
@@ -120,13 +133,23 @@ class ZipCode
     end
   end
 
-  def find(id)
+  def self.find(id)
     all.find { |zip_code| zip_code.id == id }
   end
 
-  def where(condition)
-    all.find { |zip_code| eval "zip_code.#{condition}" }
+  def self.where(condition)
+    #@condition = condition
+    Rest::params(Sepomex::zip_codes_url, condition)
   end
+
+  #def self.make_condition
+    #@condition.map { |key, val| "#{key}=#{join_word val}" }.join(" -d ")
+    #@condition.transform_values(&:upcase)
+  #end
+
+  #def self.join_word(str)
+    #str.split(" ").join("%20")
+  #end
   #def initialize; end
   #def self.all; end
   #def self.find(id); end
@@ -134,8 +157,13 @@ class ZipCode
   #def self.find_by(condition); end
 end
 
+##tested
+#puts ZipCode.all
+#ZipCode.all.each { |a| p a }
+#puts ZipCode.find(1).d_codigo
+#puts ZipCode.where(city: "guadalupe", state: "nuevo leon")
+#------------
 
-ZipCode.all_zip_codes
 #puts z.all_zip_codes[0]
 #z.all.each { |zip| p zip  }
 #puts z.find(1).d_codigo
