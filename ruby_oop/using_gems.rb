@@ -33,7 +33,7 @@ module Rest
 end
 
 class Markup
-  extend Rest
+  #extend Rest
 
   def self.generate(url)
     @url = url
@@ -67,15 +67,15 @@ module Sepomex
   end
 
   def self.zip_codes
-    @zip_codes = Rest::get zip  
+     Rest::get zip  
   end
 
   def self.states
-    @states = Rest::get "http://sepomex.icalialabs.com/api/v1/states/" 
+     Rest::get "http://sepomex.icalialabs.com/api/v1/states/" 
   end
 
   def self.cities
-    @citites = Rest::get "http://sepomex.icalialabs.com/api/v1/cities/"
+     Rest::get "http://sepomex.icalialabs.com/api/v1/cities/"
   end
 end
 
@@ -109,7 +109,7 @@ class ZipCode
   end
 
   def self.all
-    @all ||= (all_zip_codes).map do |zip|
+    (all_zip_codes).map do |zip|
       zip_code = ZipCode.new
       
       zip_code.id = zip["id"] 
