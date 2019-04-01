@@ -24,8 +24,8 @@ class RottentTomatoes
     @scrape ||= Scraping.new(get(@url))    
   end
 
-  def assign
-    scrape.iterate_dom('#Top-Box-Office tr') do |node|
+  def assign(attr_dom)
+    scrape.iterate_dom(attr_dom) do |node|
       movie = Movie.new
       movie.name = node.css(movie.name_node).text
       movie.score = node.css(movie.score_node).text
@@ -39,8 +39,5 @@ end
 
 
 tmp = RottentTomatoes.new("http://www.rottentomatoes.com/")
-tmp.assign
-tmp.movies.each do |movie|
-  print "#{movie.name} - #{movie.sale} - #{movie.score}"
-  
-end
+tmp.assign('#Top-Box-Office tr')
+tmp.movies.each { |movie| puts movie }

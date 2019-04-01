@@ -6,4 +6,8 @@ class Movie
     @name_node = ".middle_col a"
     @sale_node = ".right_col" 
   end
+
+  def to_s
+    "#{score.strip} - #{name.strip} - #{sale.strip} "
+  end
 end
