@@ -1,5 +1,5 @@
-require './request_controller'
-require './scraping_controller'
+require_relative 'request_controller'
+require_relative 'scraping_controller'
 
 
 module Scraping
