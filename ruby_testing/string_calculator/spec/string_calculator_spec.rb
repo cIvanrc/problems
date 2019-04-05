@@ -24,4 +24,9 @@ describe "StringCalculator" do
     s = StringCalculator.new
     expect(s.add("1\n2,3")).to eql 6
   end
+
+  it "return exception with negative numbers" do
+    s = StringCalculator.new
+    expect{ s.add("1\n2,-3") }.to raise_error(NegativeError, "Error::There are negative numbers: -3")
+  end
 end

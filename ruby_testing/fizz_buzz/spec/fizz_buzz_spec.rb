@@ -25,6 +25,16 @@ describe "FizzBuzz" do
       expect(f.fizz_buzz(15)).to eql "FizzBuzz"
     end
 
+    it "return 'FizzBuzz' if the number is divisible by 3 and 5" do
+      f = FizzBuzz.new
+      expect(f.fizz_buzz(315)).to eql "FizzBuzz"
+    end
+
+    it "return 'FizzBuzz' if the number is divisible by 3 and 5" do
+      f = FizzBuzz.new
+      expect(f.fizz_buzz(531)).to eql "FizzBuzz"
+    end
+
     it "return 'Fizz' if the number include a 3" do
       f = FizzBuzz.new
       expect(f.fizz_buzz(31)).to eql "Fizz"
