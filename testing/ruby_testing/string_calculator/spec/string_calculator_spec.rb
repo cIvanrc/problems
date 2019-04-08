@@ -29,4 +29,9 @@ describe "StringCalculator" do
     s = StringCalculator.new
     expect{ s.add("1\n2,-3") }.to raise_error(NegativeError, "Error::There are negative numbers: -3")
   end
+
+  it "numbers bigger tahn 1000 should be ignored" do
+    s = StringCalculator.new
+    expect(s.add("//[***]\n1000***2***3")).to eql 5
+  end
 end

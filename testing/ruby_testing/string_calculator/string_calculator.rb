@@ -12,7 +12,9 @@ class StringCalculator
 
     negatives numbers # raise error if there are negative numbers
 
-    numbers.scan( /\d/ ).map(&:to_i).inject(:+)
+    numbers.scan( /\d+/ ).select{ |number|
+      number.to_i < 1000 
+    }.map(&:to_i).inject(:+)
   end
 
   def negatives(numbers)
@@ -21,5 +23,5 @@ class StringCalculator
   end
 end
 
-#puts StringCalculator.new.add("1,2, 32, 6, 1 , o")
-puts StringCalculator.new.add("1,2, -32, 6, -1 , o")
+puts StringCalculator.new.add("1000/,2, 32, 6, 1 , o")
+#puts StringCalculator.new.add("1,2, -32, 6, -1 , o")
