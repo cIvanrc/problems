@@ -1,9 +1,7 @@
 class Sum
 
-
   def sum(numbers)
-    numbers.sort!
-    numbers[1, numbers.size].inject(:+)
+    numbers.sort[1, numbers.size-2].inject(:+)
   end
 end
 
