@@ -23,5 +23,5 @@ class StringCalculator
   end
 end
 
-puts StringCalculator.new.add("1000/,2, 32, 6, 1 , o")
-#puts StringCalculator.new.add("1,2, -32, 6, -1 , o")
+#puts StringCalculator.new.add("1000/,2, 32, 6, 1 , o")
+puts StringCalculator.new.add("1,2, -32, 6, -1 , o")

@@ -23,4 +23,4 @@ class FizzBuzz
   end
 end
 
-FizzBuzz.new.play(580)
+#FizzBuzz.new.play(580)
