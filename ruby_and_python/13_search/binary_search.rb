@@ -10,12 +10,9 @@ class Search
     last = @numbers.size - 1
 
     while first <= last
-
       mid = ( first + last ) / 2
-      if @numbers[mid] == @number
 
-        return "Si"
-      end
+      return "Si" if @numbers[mid] == @number 
 
       if @numbers[mid] < @number
         first = mid + 1
