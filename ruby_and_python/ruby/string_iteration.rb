@@ -34,6 +34,11 @@
 # 1
 #
 
+money = "¥1000"
+
 def count_multibyte_char(str)
     str.each_char.select { |char| char.bytesize > 1 }.count
 end
+
+
+puts count_multibyte_char(money)
