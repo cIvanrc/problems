@@ -1,4 +1,11 @@
 describe "Matchers of Equality" do
+  before :each do
+   puts "BEFORE each test" 
+  end
+
+  after :each do
+    puts "AFTER each"
+  end
   it "#equal - Test if it is the same object" do
     x = "Ruby"
     y = "Ruby"
