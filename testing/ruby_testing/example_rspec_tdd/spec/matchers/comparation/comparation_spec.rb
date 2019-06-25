@@ -40,6 +40,6 @@ describe "Matchers of Comparation" do
 
   it 'end_with' do
     expect("example of a string").to end_with("string")
-    expect([1,2,3,5,6]).to end_with(5)
+    expect([1,2,3,5,6]).to end_with(6)
   end
 end
